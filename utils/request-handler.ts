@@ -10,13 +10,13 @@ export class RequestHandler{
     private defaultBaseUrl: string;
     private apiPath: string = '';
     private queryParams: object = {};
-    private apihadears: Record<string, string> = {};
+    private apiHeaders: Record<string, string> = {};
     private apiBody: object = {};
     private clearAuthFlag: boolean | undefined
 
     constructor(request: APIRequestContext, apiBaseUrl: string){
         this.request = request;
-        this.defaultBaseUrl = apiBaseUrl;
+        this.defaultBaseUrl = apiBaseUrl;        
     }
 
     url(url: string){
@@ -35,7 +35,7 @@ export class RequestHandler{
     }
 
     headers(headers: Record<string, string>){
-        this.apihadears = headers;
+        this.apiHeaders = headers;
         return this;
     }
 
@@ -82,24 +82,36 @@ export class RequestHandler{
         let responseJSON: any
 
         const url = this.getUrl();
-        await test.step(`Get request to: ${url}`, async() => {
-
-            const response = await this.request.get(url, {
-                headers: this.getHeades()
+        await test.step(`POST request to: ${url}`, async() => {
+            const response = await this.request.post(url, {
+                headers: this.apiHeaders,
+                data:this.apiBody
             })
-
-            const  actualStatus = response.status();
-            expect(actualStatus).toEqual(statusCode);
+            
+            const  actualStatus = response.status();           
             responseJSON = await response.json();
-
+            
+            expect(actualStatus).toEqual(statusCode);
         })
 
         return responseJSON;
     }
 
     
-    getHeades(): { [key: string]: string; } | undefined {
-        throw new Error("Method not implemented.");
+   private getHeades(): { [key: string]: string; } | undefined {
+    //    if (!this.clearAuthFlag) {
+    //         this.apiHeaders['Authorization'] = this.apiHeaders['Authorization'] || this.defaultAuthToken
+    //     }
+        return this.apiHeaders
+    }
+
+      private cleanupFields() {
+        this.apiBody = {}
+        this.apiHeaders = {}
+        this.baseUrl = undefined
+        this.apiPath = ''
+        this.queryParams = {}
+        this.clearAuthFlag = false
     }
 
 

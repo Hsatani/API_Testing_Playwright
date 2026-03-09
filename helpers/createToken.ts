@@ -5,7 +5,7 @@ import { RequestHandler } from "../utils/request-handler";
 
 
 
-export async function createToken(email: string, password: string) {
+export async function createToken(username: string, password: string) {
 
     const context = await request.newContext();
     const api = new RequestHandler(context, config.apiUrl)
@@ -13,10 +13,13 @@ export async function createToken(email: string, password: string) {
     try{
         const tokenResponse = await api
         .path('/auth/login')
-        .body({"user": {"email": email, "password": password} })
+        .headers({'Content-Type' : 'application/json'})
+        .body({ username: "michaelw", password: "michaelwpass" })  // data: { "username": "michaelw", "password": "michaelwpass"  }
         .postRequest(200)
+        console.log('Token Response' + tokenResponse.accessToken)
 
-        return 'Token'+ tokenResponse.user.token
+        return 'Bearer'+ tokenResponse.accessToken
+
     } catch(error) {
        // Error.captureStackTrace(error, createToken);
         throw error;

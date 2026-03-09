@@ -10,18 +10,18 @@ export type TestOptions = {
 
 }
 
-export type WorkerFixture = {
-    authToken : string
-}
+// export type WorkerFixture = {
+//     authToken : string
+// }
 
-export const test = base.extend<TestOptions, WorkerFixture>({
+export const test = base.extend<TestOptions>({
 
-    authToken: [ async({}, use) => {
-        const authToken = await createToken(config.userEmail, config.userPassword);
-        await use(authToken);
-    }, {scope: 'worker'}],
+    // authToken: [ async({}, use) => {
+    //     const authToken = await createToken(config.username, config.password);
+    //     await use(authToken);
+    // }, {scope: 'worker'}],
 
-    api: async({request, authToken}, use) => {
+    api: async({request}, use) => {
         const requestHandler = new RequestHandler(request, config.apiUrl);
         await use(requestHandler);
     },

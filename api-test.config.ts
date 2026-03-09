@@ -1,20 +1,20 @@
 const processENV = process.env.TEST_ENV
-const env = processENV || 'dev'
+const env = processENV || 'qa'
 console.log('Test environment is: ' + env)
 
 const config = {
     apiUrl: 'https://dummyjson.com',
-    userEmail: '',
-    userPassword: ''
+    username: '',
+    password: ''
 }
 
 if(env === 'qa'){
-    config.userEmail = '',
-    config.userPassword = ''
+    config.username = 'michaelw',
+    config.password = 'michaelwpass'
 }
 if(env === 'prod'){
-    config.userEmail = '',
-    config.userPassword = ''
+    config.username = '',
+    config.password = ''
 }
 
 

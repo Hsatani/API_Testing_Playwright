@@ -1,11 +1,12 @@
 import {test,request,  expect} from '@playwright/test';
 
-test('test post request', async ({request}) => {
+test('test login request', async ({request}) => {
 
    const  tokenResponse = await request.post('https://dummyjson.com/auth/login', {
    data: { "username": "michaelw", "password": "michaelwpass"  }   
    });
    const tokenResponseJSON = await tokenResponse.json();
+   console.log(tokenResponseJSON);
    const authToken = tokenResponseJSON.accessToken;   
 
    const currentUserResponse = await request.get('https://dummyjson.com/auth/me', {
